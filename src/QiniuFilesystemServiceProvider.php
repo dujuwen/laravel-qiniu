@@ -26,9 +26,7 @@ class QiniuFilesystemServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Storage::extend(
-            'qiniu',
-            function ($app, $config) {
+        Storage::extend('qiniu', function ($app, $config) {
                 if (isset($config['domains'])) {
                     $domains = $config['domains'];
                 } else {
@@ -38,14 +36,16 @@ class QiniuFilesystemServiceProvider extends ServiceProvider
                         'custom'  => null
                     ];
                 }
+
                 $qiniu_adapter = new QiniuAdapter(
                     $config['access_key'],
                     $config['secret_key'],
                     $config['bucket'],
                     $domains,
-                    isset($config['notify_url']) ? $config['notify_url'] : null,
-                    isset($config['access']) ? $config['access'] : 'public'
+                    $config['notify_url'] ?? null,
+                    $config['access'] ?? 'public'
                 );
+
                 $file_system = new Filesystem($qiniu_adapter);
                 $file_system->addPlugin(new PrivateDownloadUrl());
                 $file_system->addPlugin(new DownloadUrl());

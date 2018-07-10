@@ -25,32 +25,26 @@ class QiniuAdapter extends AbstractAdapter
     const ACCESS_PUBLIC = 'public';
     const ACCESS_PRIVATE = 'private';
 
-    private $access_key = null;
-    private $secret_key = null;
-    private $bucket = null;
-    private $domains = null;
-    private $notify_url = null; //持久化处理后的回调地址
-    private $access = null;
+    protected $access_key = null;
+    protected $secret_key = null;
+    protected $bucket = null;
+    protected $domains = null;
+    protected $notify_url = null; //持久化处理后的回调地址
+    protected $access = null;
 
-    private $auth = null;
-    private $upload_manager = null;
-    private $bucket_manager = null;
-    private $operation = null;
+    protected $auth = null;
+    protected $upload_manager = null;
+    protected $bucket_manager = null;
+    protected $operation = null;
 
-    private $prefixedDomains = [];
+    protected $prefixedDomains = [];
 
-    private $lastReturn = null;
+    protected $lastReturn = null;
 
-    private $uploadToken = null;
+    protected $uploadToken = null;
 
-    public function __construct(
-        $access_key,
-        $secret_key,
-        $bucket,
-        $domains,
-        $notify_url = null,
-        $access = self::ACCESS_PUBLIC
-    ) {
+    public function __construct($access_key, $secret_key, $bucket, $domains,$notify_url = null, $access = self::ACCESS_PUBLI)
+    {
         $this->access_key = $access_key;
         $this->secret_key = $secret_key;
         $this->bucket = $bucket;
@@ -622,7 +616,6 @@ class QiniuAdapter extends AbstractAdapter
 
         if ($error != null) {
             $this->logQiniuError($error);
-
             return false;
         } else {
             return $id;
@@ -638,6 +631,7 @@ class QiniuAdapter extends AbstractAdapter
     {
         $auth = $this->getAuth();
         $pfop = New PersistentFop($auth);
+
         return $pfop->status($id);
     }
 
@@ -654,7 +648,6 @@ class QiniuAdapter extends AbstractAdapter
 
         if ($error !== null) {
             $this->logQiniuError($error);
-
             return false;
         } else {
             return $ret;
@@ -744,21 +737,10 @@ class QiniuAdapter extends AbstractAdapter
      * @param bool $strictPolicy
      * @return string
      */
-    public function uploadToken(
-        $path = null,
-        $expires = 3600,
-        $policy = null,
-        $strictPolicy = true
-    ) {
+    public function uploadToken($path = null, $expires = 3600, $policy = null, $strictPolicy = true)
+    {
         $auth = $this->getAuth();
-
-        $token = $auth->uploadToken(
-            $this->bucket,
-            $path,
-            $expires,
-            $policy,
-            $strictPolicy
-        );
+        $token = $auth->uploadToken($this->bucket, $path, $expires, $policy, $strictPolicy);
 
         return $token;
     }
@@ -797,6 +779,7 @@ class QiniuAdapter extends AbstractAdapter
         if ($this->lastReturn && isset($this->lastReturn['hash'])) {
             return $this->lastReturn['hash'];
         }
+
         return null;
     }
 
