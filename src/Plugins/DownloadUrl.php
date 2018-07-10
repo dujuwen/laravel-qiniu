@@ -1,14 +1,7 @@
 <?php
-    /**
-     * Created by PhpStorm.
-     * User: ZhangWB
-     * Date: 2015/4/21
-     * Time: 16:42
-     */
-
     namespace zgldhdjw\QiniuStorage\Plugins;
 
-use League\Flysystem\Plugin\AbstractPlugin;
+    use League\Flysystem\Plugin\AbstractPlugin;
 
     /**
      * Class DownloadUrl
