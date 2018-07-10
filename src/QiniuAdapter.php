@@ -19,7 +19,6 @@ use Qiniu\Config as QiniuConfig;
 
 class QiniuAdapter extends AbstractAdapter
 {
-
     use NotSupportingVisibilityTrait, StreamedReadingTrait;
 
     const ACCESS_PUBLIC = 'public';
@@ -548,7 +547,6 @@ class QiniuAdapter extends AbstractAdapter
         }
 
         return $this->downloadUrl('', 'default')->getUrl();
-
     }
 
     /**
@@ -588,7 +586,7 @@ class QiniuAdapter extends AbstractAdapter
     {
         $auth = $this->getAuth();
 
-        $pfop = New PersistentFop($auth);
+        $pfop = new PersistentFop($auth);
 
         $notifyUrl = is_null($notifyUrl) ? $this->notify_url : $notifyUrl;
         list($id, $error) = $pfop->execute($this->bucket, $path, $fops, $pipline, $notifyUrl, $force);
@@ -609,7 +607,7 @@ class QiniuAdapter extends AbstractAdapter
     public function persistentStatus($id)
     {
         $auth = $this->getAuth();
-        $pfop = New PersistentFop($auth);
+        $pfop = new PersistentFop($auth);
 
         return $pfop->status($id);
     }

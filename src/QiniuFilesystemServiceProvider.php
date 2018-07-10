@@ -23,10 +23,11 @@ use zgldhdjw\QiniuStorage\Plugins\WithUploadToken;
 
 class QiniuFilesystemServiceProvider extends ServiceProvider
 {
-
     public function boot()
     {
-        Storage::extend('qiniu', function ($app, $config) {
+        Storage::extend(
+            'qiniu',
+            function ($app, $config) {
                 if (isset($config['domains'])) {
                     $domains = $config['domains'];
                 } else {

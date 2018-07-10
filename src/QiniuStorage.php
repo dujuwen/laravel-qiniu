@@ -82,7 +82,6 @@ class QiniuStorage
     public function delete($key)
     {
         return $this->storage->delete($key);
-
     }
 
     /**

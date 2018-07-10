@@ -17,7 +17,8 @@ use League\Flysystem\Plugin\AbstractPlugin;
  * $re          = $disk->getDriver()->avInfo('filename.mp3'); <br>
  * @package zgldhdjw\QiniuStorage\Plugins
  */
-class AvInfo extends AbstractPlugin {
+class AvInfo extends AbstractPlugin
+{
 
     /**
      * Get the method name.

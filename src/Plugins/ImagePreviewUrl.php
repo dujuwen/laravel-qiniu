@@ -17,7 +17,8 @@ use League\Flysystem\Plugin\AbstractPlugin;
  * $re          = $disk->getDriver()->imagePreviewUrl('foo/bar1.css',$ops); <br>
  * @package zgldhdjw\QiniuStorage\Plugins
  */
-class ImagePreviewUrl extends AbstractPlugin {
+class ImagePreviewUrl extends AbstractPlugin
+{
 
     /**
      * Get the method name.

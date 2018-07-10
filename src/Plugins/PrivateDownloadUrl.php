@@ -8,7 +8,7 @@
 
     namespace zgldhdjw\QiniuStorage\Plugins;
 
-    use League\Flysystem\Plugin\AbstractPlugin;
+use League\Flysystem\Plugin\AbstractPlugin;
 
     /**
      * Class PrivateDownloadUrl
