@@ -197,4 +197,5 @@
  - https://github.com/qiniu/php-sdk
  - http://developer.qiniu.com/docs/v6/sdk/php-sdk.html
 
-
+## 发布地址
+ - https://packagist.org/packages/zgldhdjw/laravel-qiniu-storage
