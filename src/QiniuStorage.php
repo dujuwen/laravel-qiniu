@@ -94,7 +94,6 @@ class QiniuStorage
     public function copy($key, $key2)
     {
         return $this->storage->copy($key, $key2);
-
     }
 
     /**
@@ -106,19 +105,16 @@ class QiniuStorage
     public function move($key, $key2)
     {
         return $this->storage->move($key, $key2);
-
     }
 
     public function size($key)
     {
         return $this->storage->size($key);
-
     }
 
     public function lastModified($key)
     {
         return $this->storage->lastModified($key);
-
     }
 
     public function files($key)

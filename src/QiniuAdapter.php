@@ -43,7 +43,7 @@ class QiniuAdapter extends AbstractAdapter
 
     protected $uploadToken = null;
 
-    public function __construct($access_key, $secret_key, $bucket, $domains,$notify_url = null, $access = self::ACCESS_PUBLI)
+    public function __construct($access_key, $secret_key, $bucket, $domains, $notify_url = null, $access = self::ACCESS_PUBLI)
     {
         $this->access_key = $access_key;
         $this->secret_key = $secret_key;
@@ -230,17 +230,12 @@ class QiniuAdapter extends AbstractAdapter
      * @return mixed
      * @throws \Exception
      */
-    private function qiniuPutFile(
-        $upToken,
-        $key,
-        $fileResource,
-        $params = null,
-        $mime = 'application/octet-stream',
-        $checkCrc = false
-    ) {
+    private function qiniuPutFile($upToken, $key, $fileResource, $params = null, $mime = 'application/octet-stream', $checkCrc = false)
+    {
         if ($fileResource === false) {
             throw new \Exception("file can not open", 1);
         }
+
         $file = $fileResource;
         $params = UploadManager::trimParams($params);
         $stat = fstat($file);
@@ -248,29 +243,16 @@ class QiniuAdapter extends AbstractAdapter
         if ($size <= QiniuConfig::BLOCK_SIZE) {
             $data = fread($file, $size);
             fclose($file);
+
             if ($data === false) {
                 throw new \Exception("file can not read", 1);
             }
-            $result = FormUploader::put(
-                $upToken,
-                $key,
-                $data,
-                new QiniuConfig(),
-                $params,
-                $mime,
-                basename($key)
-            );
+
+            $result = FormUploader::put($upToken, $key, $data, new QiniuConfig(), $params, $mime, basename($key));
             return $result;
         }
-        $up = new ResumeUploader(
-            $upToken,
-            $key,
-            $file,
-            $size,
-            $params,
-            $mime,
-            new QiniuConfig()
-        );
+
+        $up = new ResumeUploader($upToken, $key, $file, $size, $params, $mime, new QiniuConfig());
         $ret = $up->upload(basename($key));
         fclose($file);
         return $ret;
@@ -313,7 +295,6 @@ class QiniuAdapter extends AbstractAdapter
         list($ret, $error) = $bucketMgr->copy($this->bucket, $path, $this->bucket, $newpath);
         if ($error !== null) {
             $this->logQiniuError($error);
-
             return false;
         } else {
             return true;
@@ -334,7 +315,6 @@ class QiniuAdapter extends AbstractAdapter
         $error = $bucketMgr->delete($this->bucket, $path);
         if ($error !== null) {
             $this->logQiniuError($error, $this->bucket . '/' . $path);
-
             return false;
         } else {
             return true;
@@ -357,7 +337,6 @@ class QiniuAdapter extends AbstractAdapter
         list($ret, $error) = $bucketMgr->fetch($url, $this->bucket, $key);
         if ($error !== null) {
             $this->logQiniuError($error, $this->bucket . '/' . $key);
-
             return false;
         } else {
             return $ret;
