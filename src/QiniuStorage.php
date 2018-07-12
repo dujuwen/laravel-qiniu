@@ -43,17 +43,33 @@ class QiniuStorage
 
     /**
      * 上传文件
-     * @param $key
-     * @param $contents
+     *
+     * @param string $key
+     * @param string $contents
      * @return bool
      */
     public function put($key, $contents)
     {
+        //实际上是调用League\Flysystem\Filesystem中的put()方法
         return $this->storage->put($key, $contents);
     }
 
     /**
+     * 上传流文件
+     *
+     * @param string $key
+     * @param resource $contents
+     * @return bool
+     */
+    public function putStream($key, $contents)
+    {
+        //实际上是调用League\Flysystem\Filesystem中的putStream()方法
+        return $this->storage->putStream($key, $contents);
+    }
+
+    /**
      * 附加内容到文件开头
+     *
      * @param $key
      * @param $contents
      * @return int
@@ -65,6 +81,7 @@ class QiniuStorage
 
     /**
      * 附加内容到文件结尾
+     *
      * @param $key
      * @param $content
      * @return int
