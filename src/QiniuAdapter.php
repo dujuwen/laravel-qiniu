@@ -42,16 +42,38 @@ class QiniuAdapter extends AbstractAdapter
 
     protected $uploadToken = null;
 
-    public function __construct($access_key, $secret_key, $bucket, $domains, $notify_url = null, $access = self::ACCESS_PUBLI)
+    public function __construct(string $access_key, string $secret_key, string $bucket, array $domains, $notify_url = null, string $access = self::ACCESS_PUBLI)
     {
         $this->access_key = $access_key;
         $this->secret_key = $secret_key;
         $this->bucket = $bucket;
         $this->domains = $domains;
-        $this->setPathPrefix('http://' . $this->domains['default']);
-        $this->setDomainPrefix('http://' . $this->domains['default'], 'default');
-        $this->setDomainPrefix('https://' . $this->domains['https'], 'https');
-        $this->setDomainPrefix('http://' . $this->domains['custom'], 'custom');
+
+        if (function_exists('starts_with')) {
+            if (! starts_with(strtolower($this->domains['default']), 'http')) {
+                $this->domains['default'] = 'http://' . $this->domains['default'];
+            }
+
+            if (! starts_with(strtolower($this->domains['https']), 'http')) {
+                $this->domains['https'] = 'https://' . $this->domains['https'];
+            }
+
+            if (! starts_with(strtolower($this->domains['custom']), 'http')) {
+                $this->domains['custom'] = 'http://' . $this->domains['custom'];
+            }
+
+            $this->setPathPrefix($this->domains['default']);
+            $this->setDomainPrefix($this->domains['default'], 'default');
+            $this->setDomainPrefix($this->domains['https'], 'https');
+            $this->setDomainPrefix($this->domains['custom'], 'custom');
+        } else {
+
+            $this->setPathPrefix('http://' . $this->domains['default']);
+            $this->setDomainPrefix('http://' . $this->domains['default'], 'default');
+            $this->setDomainPrefix('https://' . $this->domains['https'], 'https');
+            $this->setDomainPrefix('http://' . $this->domains['custom'], 'custom');
+        }
+
         $this->notify_url = $notify_url;
         $this->access = $access;
     }
@@ -524,6 +546,7 @@ class QiniuAdapter extends AbstractAdapter
         if ($this->access == self::ACCESS_PRIVATE) {
             return $this->privateDownloadUrl($path, $domainType);
         }
+
         $this->pathPrefix = $this->prefixedDomains[$domainType];
         $location = $this->applyPathPrefix($path);
         $location = new QiniuUrl($location);
